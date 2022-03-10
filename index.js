@@ -39,9 +39,9 @@ let people = [
     response.end(JSON.stringify(notes))
 })*/
 
-app.get('/', (request, response) => {
+/*app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
-})
+})*/
 
 app.get('/info', (request, response) => {
     const a = new Date()
