@@ -55,14 +55,14 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons', (request, response) => {
     console.log(people)
-    response.json(people)
+    response.send(people)
 })
 
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = people.find(note => note.id === id)
     if (person) {
-      response.json(person)
+      response.send(person)
     } else {
       response.status(404).end()
     }
