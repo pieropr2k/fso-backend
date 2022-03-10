@@ -4,6 +4,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 
+app.use(express.static('build'))
 app.use(cors())
 morgan.token('body', (req, res) => 
 JSON.stringify(req.body))
@@ -84,9 +85,7 @@ app.post('/api/persons', (request, response) => {
           error: `Theres's no number or name. You must put both` 
         })
     }
-    //if (people.map(person=>person.name)
-    //.includes(body.name))
-    if (people.filter(user=>user.name===body.name)) {
+    if (people.find(user=>user.name===body.name)) {
         return response.status(400).json({ 
           error: 'name must be unique' 
         })
