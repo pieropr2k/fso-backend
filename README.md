@@ -1,2 +1,2 @@
 # fso-backend
-Heroku App Link: https://boiling-meadow-40148.herokuapp.com/
+Link of the Heroku App: https://boiling-meadow-40148.herokuapp.com/
