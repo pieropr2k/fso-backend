@@ -2,15 +2,15 @@ GET http://localhost:3001/api/persons
 
 ###
 
-GET http://localhost:3001/api/persons/622d0f23b75b87caee5b3a14
+GET http://localhost:3001/api/persons/9
 
 ###
 POST http://localhost:3001/api/persons/
 content-type: application/json
 
 {
-    "name": "lol",    
-    "number": "09-9989389"
+    "name": "carlo",    
+    "number": "099989389"
 }
 
 ###

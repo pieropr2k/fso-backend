@@ -1,4 +1,3 @@
-///const http = require('http')
 require('dotenv').config()
 const morgan = require('morgan')
 const express = require('express')
@@ -8,8 +7,7 @@ const Person = require('./models/Person.js')
 
 app.use(express.static('build'))
 app.use(cors())
-morgan.token('body', (req, res) =>
-  JSON.stringify(req.body))
+morgan.token('body', (req, res) => JSON.stringify(req.body))
 app.use(express.json())
 // NO app.use(morgan('tiny :body'))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
@@ -37,14 +35,11 @@ let people = [
   }
 ]*/
 
-/*app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
-})*/
 
 app.get('/info', async (request, response) => {
   const currentDayInfo = new Date()
   console.log(currentDayInfo)
-  const peopleLength = await Person.countDocuments({}).exec();
+  const peopleLength = await Person.countDocuments({}).exec()
   //console.log(peopleLength, 'people length')
   response.send(
     //`<p>Phonebook has info for ${people.length} people</p>
@@ -54,8 +49,6 @@ app.get('/info', async (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  //console.log(people)
-  //response.send(people)
   Person.find({}).then(persons => {
     response.json(persons)
   })
@@ -71,13 +64,12 @@ app.get('/api/persons/:id', (request, response, next) => {
       }
     })
     .catch(error => {
-      //console.log(error)
       next(error)
       //response.status(400).send({ error: 'malformatted id' })
     })
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   // If the next function is called with a parameter, then the execution will continue to the error handler middleware.
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
@@ -87,28 +79,26 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', async (request, response, next) => {
-  const body = request.body
-  if (!body.name || !body.number) {
+  const { name, number } = request.body
+  if (!name || !number) {
     return response.status(400).json({
       error: `There's no number or name. You must put both`
     })
   }
-  const foundPerson = await Person.findOne({ "name" : body.name });
-  console.log(foundPerson)
+  const foundPerson = await Person.findOne({ name })
+  //console.log(foundPerson)
   if (foundPerson) {
     return response.status(400).json({
       error: 'name must be unique'
     })
   }
-  const newPerson = new Person({
-    name: body.name,
-    number: body.number
-  })
-  newPerson.save().then(savedPerson => {
-    //console.log(`added ${savedPerson.name} number ${savedPerson.number} to phonebook`)
-    response.json(savedPerson)
-  })
-  .catch(error => next(error))
+  const newPerson = new Person({ name, number })
+  newPerson.save()
+    .then(savedPerson => {
+      //console.log(`added ${savedPerson.name} number ${savedPerson.number} to phonebook`)
+      response.json(savedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -116,12 +106,11 @@ app.put('/api/persons/:id', (request, response, next) => {
   console.log(request.body)
   console.log(number)
   console.log(request.params.id)
-  Person.findByIdAndUpdate(request.params.id, { number }, 
+  Person.findByIdAndUpdate(request.params.id, { number },
     { new: true, runValidators: true, context: 'query' })
     .then(updatedNote => {
-      console.log(updatedNote)
+      //console.log(updatedNote)
       response.json(updatedNote)
-      //response.status(204).end()
     })
     .catch(error => next(error))
 })
